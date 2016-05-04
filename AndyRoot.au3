@@ -27,6 +27,7 @@ If FileExists("C:\Program Files\Andy\Andy.exe") = 0 Then
 			TrayTip("AndyRoot", "Download Completed. Installing...", 10)
 			ShellExecuteWait($tempDir&"AndyIns.exe","/?")
 			ProcessWait("AndyConsole.exe")
+			WinWait("Andy")
 			TrayTip("AndyRoot", "Installation Completed.", 10)
 			sleep(5000)
 		Case Else
