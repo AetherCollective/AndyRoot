@@ -14,15 +14,15 @@ If FileExists("C:\Program Files\Andy\Andy.exe") = 0 Then
 	Select
 		Case $ret = 6
 			TrayTip("AndyRoot", "Please wait while we install Andy for you. You may continue using your computer.", 10)
-			$ret = InetGet("http://downloads.andyroid.net/installer/v46/Andy_46.2_207_x64bit.exe", $tempDir & "AndyIns.exe", 1)
-			Select
-				Case $ret = 0
-					InputBox("AndyRoot", "An error occured during the download and cannot continue. Please go to the following website to install Andy.", "http://www.andyroid.net/")
-					Exit
-				Case $ret < 5 * 1000 * 1024
-					InputBox("AndyRoot", "An error occured during the download and cannot continue. Please go to the following website to install Andy.", "http://www.andyroid.net/")
-					Exit
-			EndSelect
+			If @OSArch = "X64" Then
+				$ret = InetGet("http://downloads.andyroid.net/installer/v46/Andy_46.2_207_x64bit.exe", $tempDir & "AndyIns.exe", 1)
+			Else
+				$ret = InetGet("http://downloads.andyroid.net/installer/v46/Andy_46.2_207_x86bit.exe", $tempDir & "AndyIns.exe", 1)
+			EndIf
+			If $ret < 5 * 1000 * 1024 Or $ret = 0 Then
+				InputBox("AndyRoot", "An error occured during the download and cannot continue. Please go to the following website to install Andy.", "http://www.andyroid.net/getandy.php")
+				Exit
+			EndIf
 			TrayTip("AndyRoot", "Download Completed. Installing...", 10)
 			ShellExecuteWait($tempDir & "AndyIns.exe", "/?")
 			ProcessWait("AndyConsole.exe")
@@ -84,7 +84,7 @@ Func AndyRoot()
 	ShellExecuteWait("adb.exe", "root", $tempDir, "", @SW_HIDE)
 	ShellExecuteWait("adb.exe", "install Superuser.apk", $tempDir, "", @SW_HIDE)
 	Sleep(5000)
-	ShellExecuteWait("adb.exe", "install Superuser.apk",$tempDir,"",@SW_HIDE);Fix for Superuser not installing on the first try. I have no clue why it fails on the first time.
+	ShellExecuteWait("adb.exe", "install Superuser.apk", $tempDir, "", @SW_HIDE);Fix for Superuser not installing on the first try. I have no clue why it fails on the first time.
 	ShellExecuteWait("adb.exe", "install rootcheck.apk", $tempDir, "", @SW_HIDE)
 	ShellExecuteWait("adb.exe", "push su /storage/sdcard0/", $tempDir, "", @SW_HIDE)
 	ShellExecuteWait("adb.exe", 'shell "mount -o remount,rw /system"; "cp /storage/sdcard0/su" "/system/xbin/su"; "chmod 06755 /system/xbin/su"; "mount -o remount,ro /system"', $tempDir, "", @SW_HIDE)
