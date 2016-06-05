@@ -1,3 +1,4 @@
+#RequireAdmin
 Opt("WinTitleMatchMode", 3)
 $workingdirectory = "C:\Program Files\Andy"
 $tempDir = @TempDir & "\BetaLeaf Software\AndyRoot\"
