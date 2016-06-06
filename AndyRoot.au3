@@ -1,4 +1,7 @@
 #RequireAdmin
+#Region ;**** Directives created by AutoIt3Wrapper_GUI ****
+#AutoIt3Wrapper_UseX64=n
+#EndRegion ;**** Directives created by AutoIt3Wrapper_GUI ****
 Opt("WinTitleMatchMode", 3)
 $workingdirectory = "C:\Program Files\Andy"
 $tempDir = @TempDir & "\BetaLeaf Software\AndyRoot\"
