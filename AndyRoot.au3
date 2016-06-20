@@ -100,6 +100,7 @@ Func AndyRoot()
 	ShellExecuteWait("adb.exe", "push su /storage/sdcard0/", $tempDir, "", @SW_HIDE)
 	ShellExecuteWait("adb.exe", 'shell "mount -o remount,rw /system"; "cp /storage/sdcard0/su" "/system/xbin/su"; "chmod 06755 /system/xbin/su"; "mount -o remount,ro /system"', $tempDir, "", @SW_HIDE)
 	ShellExecuteWait("adb.exe", "reboot", $tempDir, "", @SW_HIDE)
+	AdlibUnRegister("CheckTimer")
 	MsgBox(0, "Andy", "Please run Root Checker Basic in Andy and click Verify Root. If you were asked for root access, then root succeeded. If root did not succeed, rerun this app.")
 EndFunc   ;==>AndyRoot
 Func CheckTimer()
