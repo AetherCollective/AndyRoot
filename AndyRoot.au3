@@ -41,36 +41,7 @@ If FileExists("C:\Program Files\Andy\Andy.exe") = 0 Then
 			Exit
 	EndSelect
 EndIf
-;CloseAndy();Old method and no longer needed
 AndyRoot()
-Func CloseAndy()
-	TrayTip("AndyRoot", "Closing Andy so we can root.", 10)
-	$timer = TimerInit()
-	Do
-		ProcessClose("AndyConsole.exe")
-		If TimerDiff($timer) > (60 * 1000) Then MsgBox(16, "AndyRoot", "Unable to close the following processes within 60 seconds:" & @CRLF & @CRLF & "adb.exe" & @CRLF & "Andy.exe" & @CRLF & "AndyADB.exe" & @CRLF & "AndyConsole.exe" & @CRLF & "AndyDND.exe" & @CRLF & "HandyAndy.exe" & @CRLF & @CRLF & "Please terminate these processes to continue.")
-	Until ProcessExists("AndyConsole.exe") = 0
-	Do
-		ProcessClose("adb.exe")
-		If TimerDiff($timer) > (60 * 1000) Then MsgBox(16, "AndyRoot", "Unable to close the following processes within 60 seconds:" & @CRLF & @CRLF & "adb.exe" & @CRLF & "Andy.exe" & @CRLF & "AndyADB.exe" & @CRLF & "AndyConsole.exe" & @CRLF & "AndyDND.exe" & @CRLF & "HandyAndy.exe" & @CRLF & @CRLF & "Please terminate these processes to continue.")
-	Until ProcessExists("adb.exe") = 0
-	Do
-		ProcessClose("AndyADB.exe")
-		If TimerDiff($timer) > (60 * 1000) Then MsgBox(16, "AndyRoot", "Unable to close the following processes within 60 seconds:" & @CRLF & @CRLF & "adb.exe" & @CRLF & "Andy.exe" & @CRLF & "AndyADB.exe" & @CRLF & "AndyConsole.exe" & @CRLF & "AndyDND.exe" & @CRLF & "HandyAndy.exe" & @CRLF & @CRLF & "Please terminate these processes to continue.")
-	Until ProcessExists("AndyADB.exe") = 0
-	Do
-		ProcessClose("AndyDnD.exe")
-		If TimerDiff($timer) > (60 * 1000) Then MsgBox(16, "AndyRoot", "Unable to close the following processes within 60 seconds:" & @CRLF & @CRLF & "adb.exe" & @CRLF & "Andy.exe" & @CRLF & "AndyADB.exe" & @CRLF & "AndyConsole.exe" & @CRLF & "AndyDND.exe" & @CRLF & "HandyAndy.exe" & @CRLF & @CRLF & "Please terminate these processes to continue.")
-	Until ProcessExists("AndyDnD.exe") = 0
-	Do
-		ProcessClose("HandyAndy.exe")
-		If TimerDiff($timer) > (60 * 1000) Then MsgBox(16, "AndyRoot", "Unable to close the following processes within 60 seconds:" & @CRLF & @CRLF & "adb.exe" & @CRLF & "Andy.exe" & @CRLF & "AndyADB.exe" & @CRLF & "AndyConsole.exe" & @CRLF & "AndyDND.exe" & @CRLF & "HandyAndy.exe" & @CRLF & @CRLF & "Please terminate these processes to continue.")
-	Until ProcessExists("HandyAndy.exe") = 0
-	Do
-		ProcessClose("Andy.exe")
-		If TimerDiff($timer) > (60 * 1000) Then MsgBox(16, "AndyRoot", "Unable to close the following processes within 60 seconds:" & @CRLF & @CRLF & "adb.exe" & @CRLF & "Andy.exe" & @CRLF & "AndyADB.exe" & @CRLF & "AndyConsole.exe" & @CRLF & "AndyDND.exe" & @CRLF & "HandyAndy.exe" & @CRLF & @CRLF & "Please terminate these processes to continue.")
-	Until ProcessExists("Andy.exe") = 0
-EndFunc   ;==>CloseAndy
 Func AndyRoot()
 	$count += 1
 	If ProcessExists("AndyConsole.exe") = 0 Or ProcessExists("AndyADB.exe") = 0 Then TrayTip("AndyRoot", "Starting Andy. This can take a while.", 10)
