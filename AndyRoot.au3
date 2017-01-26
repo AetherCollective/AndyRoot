@@ -1,9 +1,12 @@
 #RequireAdmin
 #Region ;**** Directives created by AutoIt3Wrapper_GUI ****
-#AutoIt3Wrapper_Icon=C:\ISN AutoIt Studio\autoitstudioicon.ico
+#AutoIt3Wrapper_Icon=AndyRoot_99.ico
 #AutoIt3Wrapper_Compression=4
-#AutoIt3Wrapper_UseUpx=y
 #EndRegion ;**** Directives created by AutoIt3Wrapper_GUI ****
+#include <AutoItConstants.au3>
+#include <FileConstants.au3>
+#include <InetConstants.au3>
+#include <MsgBoxConstants.au3>
 Opt("WinTitleMatchMode", 3)
 $workingdirectory = "C:\Program Files\Andy"
 $tempDir = @TempDir & "\BetaLeaf Software\AndyRoot\"
@@ -20,12 +23,25 @@ If FileExists("C:\Program Files\Andy\Andy.exe") = 0 Then
 	$ret = MsgBox(64 + 4, "AndyRoot", "Andy is not installed on this computer. Shall I install it for you?")
 	Select
 		Case $ret = 6
-			TrayTip("AndyRoot", "Please wait while we install Andy for you. You may continue using your computer.", 10)
-			If @OSArch = "X64" Then
-				$ret = InetGet("http://downloads.andyroid.net/installer/v46/Andy_46.8_326_x64bit.exe", $tempDir & "AndyIns.exe", 1)
-			Else
-				$ret = InetGet("http://downloads.andyroid.net/installer/v46/Andy_46.8_326_x86bit.exe", $tempDir & "AndyIns.exe", 1)
-			EndIf
+			ProgressOn("AndyRoot", "Downloading...")
+			Do
+				$hDownload = InetGet("http://downloads.andyroid.net/installer/v46/Andy_46.8_326_" & StringLower(@OSArch) & "bit.exe", "AndyIns.exe", $INET_FORCERELOAD, $INET_DOWNLOADBACKGROUND)
+				While InetGetInfo($hDownload, $INET_DOWNLOADCOMPLETE) = False
+					ProgressSet(InetGetInfo($hDownload, $INET_DOWNLOADREAD) / InetGetInfo($hDownload, $INET_DOWNLOADSIZE) * 110, "Downloaded " & Round(InetGetInfo($hDownload, $INET_DOWNLOADREAD) / 1000000, 2) & " MB of " & Round(InetGetInfo($hDownload, $INET_DOWNLOADSIZE) / 1000000, 2) & " MB.")
+					Select
+						Case InetGetInfo($hDownload, $INET_DOWNLOADSUCCESS) = True
+							ConsoleWrite("Success!" & @CRLF)
+							ExitLoop
+						Case InetGetInfo($hDownload, $INET_DOWNLOADERROR) = True
+							ConsoleWrite("Failed." & @CRLF)
+							ProgressSet(0,"Download Failed. Retrying...")
+							sleep(2000)
+							ExitLoop
+					EndSelect
+					Sleep((1000 / @DesktopRefresh) + 1)
+				WEnd
+			Until InetGetInfo($hDownload, $INET_DOWNLOADSUCCESS) = True
+			ProgressOff()
 			If $ret < 5 * 1000 * 1024 Or $ret = 0 Then
 				InputBox("AndyRoot", "An error occured during the download and cannot continue. Please go to the following website to install Andy.", "http://www.andyroid.net/getandy.php")
 				Exit
